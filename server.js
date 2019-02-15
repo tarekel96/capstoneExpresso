@@ -2,7 +2,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors"); // middleware for connecting Express routes
 const errorhandler = require("errorhandler");
-const express = require("express");
 const morgan = require("morgan"); // HTTP request logger middleware for node.js
 const apiRouter = require("./api/api");
 
@@ -16,6 +15,13 @@ app.use(morgan("dev"));
 app.use("/api", apiRouter);
 
 app.use(errorhandler());
+
+// testing route with postman
+app.get("/api", (req, res) => {
+  res.json({
+    testing: "test"
+  });
+});
 
 app.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);
