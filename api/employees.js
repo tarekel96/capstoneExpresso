@@ -13,21 +13,6 @@ employeesRouter.get("/testing", (req, res) => {
   });
 });
 
-employeesRouter.get("/", (req, res, next) => {
-  db.all(
-    "SELECT * FROM Employee WHERE is_current_employee = 1",
-    (err, employees) => {
-      if (err) {
-        next(err);
-      } else {
-        res.status(200).json({
-          employees: employees
-        });
-      }
-    }
-  );
-});
-
 employeesRouter.param("employeeId", (req, res, next, employeeId) => {
   const sql = "SELECT * FROM Employee WHERE Employee.id = $employeeId";
   const values = { $employeeId: employeeId };
@@ -43,18 +28,26 @@ employeesRouter.param("employeeId", (req, res, next, employeeId) => {
     } else {
       res.sendStatus(404);
     }
-    return response;
   });
 });
 
-employeesRouter.get("/:id", (req, res, next) => {
-  res.status(200).json({ employee: req.employee });
+employeesRouter.get("/", (req, res, next) => {
+  db.all(
+    "SELECT * FROM Employee WHERE is_current_employee = 1",
+    (err, employees) => {
+      if (err) {
+        next(err);
+      } else {
+        res.status(200).json({
+          employees: employees
+        });
+      }
+    }
+  );
 });
 
-// employeesRouter.get("/:id", (req, res, next) => {
-//   res.status(200).json({
-//     employee: req.params
-//   });
-// });
+employeesRouter.get("/:employeeId", (req, res, next) => {
+  res.status(200).json({ employee: req.employee });
+});
 
 module.exports = employeesRouter;
