@@ -13,19 +13,30 @@ employeesRouter.get("/testing", (req, res) => {
   });
 });
 
-employeesRouter.get("/api/employees", (req, res, next) => {
+employeesRouter.get("/", (req, res, next) => {
   db.all(
     "SELECT * FROM Employee WHERE is_current_employee = 1",
-    (err, result) => {
+    (err, employees) => {
       if (err) {
         next(err);
       } else {
-        res.send(200).json({
+        res.status(200).json({
           employees: employees
         });
       }
     }
   );
 });
+
+// artistsRouter.get('/', (req, res, next) => {
+//   db.all('SELECT * FROM Artist WHERE Artist.is_currently_employed = 1',
+//     (err, artists) => {
+//       if (err) {
+//         next(err);
+//       } else {
+//         res.status(200).json({artists: artists});
+//       }
+//     });
+// });
 
 module.exports = employeesRouter;
