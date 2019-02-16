@@ -28,15 +28,33 @@ employeesRouter.get("/", (req, res, next) => {
   );
 });
 
-// artistsRouter.get('/', (req, res, next) => {
-//   db.all('SELECT * FROM Artist WHERE Artist.is_currently_employed = 1',
-//     (err, artists) => {
-//       if (err) {
-//         next(err);
-//       } else {
-//         res.status(200).json({artists: artists});
-//       }
-//     });
+employeesRouter.param("employeeId", (req, res, next, employeeId) => {
+  const sql = "SELECT * FROM Employee WHERE Employee.id = $employeeId";
+  const values = { $employeeId: employeeId };
+  db.get(sql, values, (error, employee) => {
+    if (error) {
+      next(error);
+    } else if (employee) {
+      req.employee = employee;
+      res.status(200).json({
+        employee: employee
+      });
+      next();
+    } else {
+      res.sendStatus(404);
+    }
+    return response;
+  });
+});
+
+employeesRouter.get("/:id", (req, res, next) => {
+  res.status(200).json({ employee: req.employee });
+});
+
+// employeesRouter.get("/:id", (req, res, next) => {
+//   res.status(200).json({
+//     employee: req.params
+//   });
 // });
 
 module.exports = employeesRouter;
