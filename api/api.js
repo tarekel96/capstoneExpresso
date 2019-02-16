@@ -6,11 +6,12 @@ const menuRouter = require("./menu.js");
 
 apiRouter.use(bodyParser.json());
 
-// apiRouter.get("/employees", (res, req) => {
-//   res.json({
-//     testing: "employees"
-//   });
-// });
+// testing route with Postman
+apiRouter.get("/test", (req, res) => {
+  res.json({
+    testing: "employees"
+  });
+});
 
 apiRouter.use("/employees", employeesRouter);
 apiRouter.use("/menu", menuRouter);

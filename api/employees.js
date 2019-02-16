@@ -3,8 +3,15 @@ const employeesRouter = express.Router();
 
 const sqlite3 = require("sqlite3");
 const db = new sqlite3.Database(
-  process.env.TEST_DATABASE || "./database.sqlite"
+  process.env.TEST_DATABASE || ".../database.sqlite" // "./database.sqlite"
 );
+
+// testing route with Postman
+employeesRouter.get("/testing", (req, res) => {
+  res.json({
+    employeeTest: "works"
+  });
+});
 
 employeesRouter.get("/api/employees", (req, res, next) => {
   db.all(
